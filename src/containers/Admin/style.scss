@@ -727,6 +727,13 @@
 
     .btn-text {
       margin-left: 33px;
+      width: 360px;
+      .upload-sample-file {
+        color: #084892;
+        font-size: 22px;
+        margin-top: 3px;
+        cursor: pointer;
+      }
       .add-user-btn {
         max-width: 450px;
 
@@ -985,14 +992,12 @@
             text-overflow: ellipsis;
             white-space: nowrap;
             &:hover {
-              
             }
           }
           .admin-description2-hover {
             width: 655px;
             display: none;
-            
-          } 
+          }
           &:hover {
             .admin-description2 {
               display: none;
@@ -1002,9 +1007,9 @@
               display: flex;
               padding: 20px;
               margin-right: 10px;
-              background-color: #FFFFFF;
-              box-shadow:0px 4px 8px 2px rgba(82, 82, 82, 0.16);
-            }    
+              background-color: #ffffff;
+              box-shadow: 0px 4px 8px 2px rgba(82, 82, 82, 0.16);
+            }
           }
         }
 
@@ -1246,7 +1251,7 @@
             border-radius: 3px;
             padding: 0 10px;
           }
-          input[type='checkbox'] {
+          input[type="checkbox"] {
             width: 20px;
             height: 20px;
             border: 1px solid #888888;

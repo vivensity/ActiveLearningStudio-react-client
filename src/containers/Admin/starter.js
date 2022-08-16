@@ -71,6 +71,7 @@ function Starter(props) {
     setActivePageNumber,
     filteredItems,
     setSearchKey,
+    bulkUpload,
   } = props;
   return (
     <>
@@ -123,6 +124,7 @@ function Starter(props) {
         setSearchQueryTeam={setSearchQueryTeam}
         filteredItems={filteredItems}
         setSearchKey={setSearchKey}
+        bulkUpload={bulkUpload}
       />
       {/* {subTypeState === 'All settings' && <Settings />} */}
       {subTypeState === 'Manage Roles' ? (

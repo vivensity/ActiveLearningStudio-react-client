@@ -1026,6 +1026,7 @@ export default function Pills(props) {
                   type={type}
                   roles={roles}
                   inviteUser={true}
+                  bulkUpload={"Add Multiple Users"}
                 />
               )}
               {type === 'Users' && subTypeState === 'Manage Roles' && (
