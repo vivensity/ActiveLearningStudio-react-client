@@ -27,6 +27,7 @@ const INITIAL_STATE = {
   education_level: null,
   author_tags: null,
   activity_layouts: null,
+  bulkUsers: [],
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -203,6 +204,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         teams: action.payload,
+      };
+    case actionTypes.BULK_UPLOAD:
+      return {
+        ...state,
+        bulkUsers: action.payload,
       };
     default:
       return state;
