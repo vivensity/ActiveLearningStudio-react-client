@@ -237,7 +237,11 @@ export const teamsActionAdminPanel = (subOrgId, query, page, size, order_by_colu
 };
 
 export const uploadBulkUsers = (file) => async (dispatch) => {
-  const result = await adminService.uploadBulkUsers(file);
+  const centralizedState = store.getState();
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
+  const result = await adminService.uploadBulkUsers(file, activeOrganization?.id);
   dispatch({
     type: actionTypes.CLEAR_USERS_STATE,
   });
