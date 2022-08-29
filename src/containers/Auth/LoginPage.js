@@ -127,7 +127,7 @@ class LoginPage extends React.Component {
         {!clicked ? (
           <div className="auth-container">
             <div className="d-flex align-items-center justify-content-between">
-              <h1 className="auth-title ">Welcome to {window.__RUNTIME_CONFIG__.REACT_APP_INSTANT_NAME || 'Curriki'}</h1>
+              <h1 className="auth-title ">Welcome to {window.__RUNTIME_CONFIG__.REACT_APP_INSTANT_NAME || 'imSparked'}</h1>
 
               {/* <strong>OR</strong> */}
 
@@ -191,7 +191,7 @@ class LoginPage extends React.Component {
               <a onClick={this.goToRegister}>Sign up</a>
             </p>
             <p className="auth-p2-descrip">
-              By clicking the Sign Up button, you are creating a CurrikiStudio account, and you agree to Currikis&nbsp;
+              By clicking the Sign Up button, you are creating a imSparked account, and you agree to Currikis&nbsp;
               <a href="/" target="_blank">
                 Terms of Use&nbsp;
               </a>
@@ -204,7 +204,7 @@ class LoginPage extends React.Component {
         ) : (
           <div className="auth-container">
             <div className="d-flex align-items-center justify-content-between">
-              <h1 className="auth-title">Welcome to {window.__RUNTIME_CONFIG__.REACT_APP_INSTANT_NAME || 'Curriki'}</h1>
+              <h1 className="auth-title">Welcome to {window.__RUNTIME_CONFIG__.REACT_APP_INSTANT_NAME || 'imSparked'}</h1>
             </div>
             {/* <p className='auth-Pdescrip'>Start making a difference in the way learning experiences are created.</p> */}
             <p className="auth-Pdescrip"></p>
