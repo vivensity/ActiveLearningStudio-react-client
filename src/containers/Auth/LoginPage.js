@@ -187,11 +187,11 @@ class LoginPage extends React.Component {
               </div>
             </form>
             <p className="auth-description">
-              New to Curriki?&nbsp;
+              New to imSparked?&nbsp;
               <a onClick={this.goToRegister}>Sign up</a>
             </p>
             <p className="auth-p2-descrip">
-              By clicking the Sign Up button, you are creating a imSparked account, and you agree to Currikis&nbsp;
+              By clicking the Sign Up button, you are creating a imSparked account, and you agree to imSparkeds&nbsp;
               <a href="/" target="_blank">
                 Terms of Use&nbsp;
               </a>
@@ -313,7 +313,7 @@ class LoginPage extends React.Component {
                         </>
                       ) : null}
                       <div className="termsandcondition">
-                        By logging in, you agree to Curriki's{' '}
+                        By clicking the &quot;Login&quot; button, you agree to imSparked&apos; s{' '}
                         <a
                           target="_blank"
                           href={domain?.tos_type == 'URL' || domain?.tos_url != null ? domain?.tos_url : `/org/${domain?.domain}/terms-policy-content/tos_content`}

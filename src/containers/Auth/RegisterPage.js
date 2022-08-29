@@ -268,8 +268,8 @@ class RegisterPage extends React.Component {
               {/* <p className="auth-Pdescrip text-left">
                 {!clicked
                   ? 'Start making a difference in the way learning experiences are created.'
-                  : 'Before start creating awesome content, please let us know the usage your are giving to Curriki. '}
-              </p> */}
+                  : 'Before start creating awesome content, please let us know the usage your are giving to imSparked. '}
+                </p> */}
               <div className="content-section">
                 <Tabs
                   defaultActiveKey={activeTab}
@@ -473,7 +473,7 @@ class RegisterPage extends React.Component {
                   <div className="form-group">
                     <div className="using-curriki">
                       <div className="curriki-line">You are using imSparked for:</div>
-                      {/* <div className="line-horizontal" /> */}
+                      <div className="line-horizontal" />
                     </div>
                   </div>
                   <div className="form-group ">
