@@ -519,7 +519,7 @@ class RegisterPage extends React.Component {
                     </button>
                   </div>
                   <div className="termsandcondition">
-                    By clicking the &quot;Sign Up&quot; button, you are creating a CurrikiStudio account, and you agree to Curriki&apos;s{' '}
+                    By clicking the &quot;Sign Up&quot; button, you are creating a imSparked account, and you agree to imSparked&apos;s{' '}
                     <a target="_blank" href={domain?.tos_type == 'URL' || domain?.tos_url != null ? domain?.tos_url : `/org/${domain?.domain}/terms-policy-content/tos_content`}>
                       Terms of Use
                     </a>{' '}

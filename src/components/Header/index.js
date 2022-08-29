@@ -42,7 +42,7 @@ function Header(props) {
                 className="nav-logo"
                 style={{
                   backgroundImage:
-                    !!currentOrganization?.image && currentOrganization?.image.includes('dev.currikistudio')
+                    !!currentOrganization?.image && currentOrganization?.image.includes('imsparked')
                       ? `url(${currentOrganization?.image})`
                       : `url(${global.config.resourceUrl}${currentOrganization?.image})`,
                   backgroundPosition: 'left',
