@@ -122,7 +122,7 @@ const GoogleLoginModal = ({
             {!showForm ? (
               <div className="content-authorization" style={{textAlign:"center"}}>
                 <div className="alert alert-warning" style={{borderRadius:"8px"}}>
-                  With CurrikiStudio you can publish your {shareType} as a new Google Classroom course.
+                  With imSparked you can publish your {shareType} as a new Google Classroom course.
                 </div>
                 <p>To start, please log into your Google account.</p>
                 <div style={{marginBottom:"32px"}}>
