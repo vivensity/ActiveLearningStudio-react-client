@@ -29,6 +29,7 @@ const maxLength1000 = maxLength(1000);
 
 let imageValidation = '';
 const projectShare = true;
+let projectsTab = []
 
 const onSubmit = async (values, dispatch, props) => {
   let labels = [];
@@ -123,6 +124,7 @@ const onSubmit = async (values, dispatch, props) => {
           is_public: projectShare,
           organization_visibility_type_id: 1,
           team_id: fromTeam && selectedTeam ? selectedTeam?.id : null,
+          project_for: labels ? labels : []
         })
         : createProjectAction({
           name,
@@ -132,6 +134,7 @@ const onSubmit = async (values, dispatch, props) => {
           team_id: fromTeam && selectedTeam ? selectedTeam?.id : null,
           // eslint-disable-next-line max-len
           thumb_url: 'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
+          project_for: labels ? labels : []
         }),
     );
     if (handleCloseProjectModal) {
