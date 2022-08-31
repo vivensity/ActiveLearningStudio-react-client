@@ -55,11 +55,11 @@ const H5PEditor = (props) => {
   };
   useEffect(() => {
     submitForm.current = submitResource;
-    saveButtonCheck.current = handleSaveButtonOnClose;
+    saveButtonCheck && (saveButtonCheck.current = handleSaveButtonOnClose);
   }, [formData]);
 
   useEffect(() => {
-    saveOnlyHandlerClose.current = saveOnlyHandler;
+    saveOnlyHandlerClose && (saveOnlyHandlerClose.current = saveOnlyHandler);
   }, [saveOnlyHandler])
 
   useEffect(() => {
@@ -97,9 +97,9 @@ const H5PEditor = (props) => {
 
   const submitResource = async (event) => {
     const parameters = window.h5peditorCopy.getParams();
-    formData.subject_id = !formData.subject_id.includes(undefined) ? formatSelectBoxData(formData.subject_id) : '';
-    formData.education_level_id = !formData.education_level_id.includes(undefined) ? formatSelectBoxData(formData.education_level_id) : '';
-    formData.author_tag_id = !formData.author_tag_id.includes(undefined) ? formatSelectBoxData(formData.author_tag_id) : '';
+    formData.subject_id = formatSelectBoxData(formData.subject_id);
+    formData.education_level_id = formatSelectBoxData(formData.education_level_id);
+    formData.author_tag_id = formatSelectBoxData(formData.author_tag_id);
     const { metadata } = parameters;
     if (metadata?.title !== undefined) {
       if (editActivity) {
@@ -141,12 +141,12 @@ const H5PEditor = (props) => {
         }
         await dispatch(edith5pVideoActivity(editVideo.id, { ...formData, title: metadata?.title || formData.title }));
         setOpenVideo(false);
-      } else if (saveOnlyHandler.activity || saveOnlyHandlerClose.current.activity) {
+      } else if (saveOnlyHandler.activity || saveOnlyHandlerClose?.current?.activity) {
         dispatch(editResourceAction(
           playlistId,
           h5pLib,
           h5pLibType,
-          saveOnlyHandler?.activity?.id || saveOnlyHandlerClose.current?.activity?.id,
+          saveOnlyHandler?.activity?.id || saveOnlyHandlerClose?.current?.activity?.id,
           { ...formData, title: metadata?.title || formData.title },
           hide,
           projectId
@@ -160,9 +160,9 @@ const H5PEditor = (props) => {
         if (activityPreview) {
           dispatch(createIndResourceAction({ ...formData, title: metadata?.title || formData.title }, hide, accountId, settingId));
         } else {
-          handleCreateResourceSubmit(playlistId, h5pLib, h5pLibType, payload, { ...formData, title: metadata?.title || formData.title }, projectId, hide, reverseType);
+          // handleCreateResourceSubmit(playlistId, h5pLib, h5pLibType, payload, { ...formData, title: metadata?.title || formData.title }, projectId, hide, reverseType);
+          handleCreateResourceSubmit(playlistId, h5pLib, h5pLibType, payload, { ...formData, title: metadata?.title || formData.title }, projectId, hide, reverseType, setSaveOnlyHandler);
         }
-        handleCreateResourceSubmit(playlistId, h5pLib, h5pLibType, payload, { ...formData, title: metadata?.title || formData.title }, projectId, hide, reverseType, setSaveOnlyHandler);
       }
       delete window.H5PEditor; // Unset H5PEditor after saving the or editing the activity
     }
@@ -287,7 +287,7 @@ const H5PEditor = (props) => {
                 Cancel
               </div>
             </div>
-            <div className="save-close">
+            <div className={saveButton ? "save-close space-between" : "save-close"}>
               <div
                 className="saveclosemodel"
                 onClick={() => {

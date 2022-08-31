@@ -56,8 +56,10 @@
   }
   .save-close {
     display: flex;
-    width: 315px;
-    justify-content: space-between;
+    &.space-between {
+      width: 315px;
+      justify-content: space-between;
+    }
     .save-btn {
       margin-right: 10px;
       margin-left: 10px;
