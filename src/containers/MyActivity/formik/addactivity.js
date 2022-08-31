@@ -47,9 +47,9 @@ const AddActivity = (props) => {
   const [subjects, setSubjects] = useState(null);
   const [authorTags, setAuthorTags] = useState(null);
   const [educationLevels, setEducationLevels] = useState(null);
-  const [selectedSubjects, setSelectedSubjects] = useState(null);
-  const [selecteAuthorTags, setSelecteAuthorTags] = useState(null);
-  const [selectedEducationLevel, setSelectedEducationLevel] = useState(null);
+  const [selectedSubjects, setSelectedSubjects] = useState([]);
+  const [selecteAuthorTags, setSelecteAuthorTags] = useState([]);
+  const [selectedEducationLevel, setSelectedEducationLevel] = useState([]);
   const [exploreCheck, setExploreCheck] = useState(true);
 
   useEffect(() => {
@@ -166,16 +166,16 @@ const AddActivity = (props) => {
             <Tabs text="1. Select Activity" tabActive={true} />
             {
               ((counter = 0),
-              layout?.map((data) => {
-                if (data.id === selectedLayout?.id && counter == 0) {
-                  counter++;
-                  return (
-                    <>
-                      <Tabs text="2. Describe and  create layout" className="ml-10" tabActive={true} />
-                    </>
-                  );
-                }
-              }))
+                layout?.map((data) => {
+                  if (data.id === selectedLayout?.id && counter == 0) {
+                    counter++;
+                    return (
+                      <>
+                        <Tabs text="2. Describe and  create layout" className="ml-10" tabActive={true} />
+                      </>
+                    );
+                  }
+                }))
             }
             {counter === 0 && (
               <>

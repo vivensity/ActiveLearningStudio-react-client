@@ -394,7 +394,7 @@ const Index = ({ activities }) => {
                               <Alert variant="danger">No results found.</Alert>
                             ) : (
                               <StartingPage
-                                welcome="Let's Build a CurrikiStudio Activity!"
+                                welcome="Let's Build a imSparked Activity!"
                                 createBtnTitle="Create New Activity"
                                 createTitle="Create your first learning activity."
                                 createDetail='We have a library of over 40 "interactive-by-design" learning activities to create immersive learning experiences.'
@@ -503,41 +503,41 @@ const Index = ({ activities }) => {
 
                           {activities
                             ? allActivities?.data.map((activityData) => (
+                              <AddVideoCard
+                                setModalShow={setModalShow}
+                                setCurrentActivity={setCurrentActivity}
+                                setScreenStatus={setScreenStatus}
+                                setOpenVideo={setOpenVideo}
+                                title={activityData.title}
+                                data={activityData}
+                                className="card-spacing"
+                                activities={activities}
+                                isActivityCard
+                                permission={permission}
+                                handleShow={handleShow}
+                                setSelectedActivityId={setActivityId}
+                                addToProjectCheckbox={addToProjectCheckbox}
+                                selectedProjectstoAdd={selectedProjectstoAdd}
+                                setSelectedProjectstoAdd={setSelectedProjectstoAdd}
+                                sethideallothers={sethideallothers}
+                                setisbackHide={setisbackHide}
+                              />
+                            ))
+                            : allVideos?.data?.map((video) => (
+                              <>
                                 <AddVideoCard
                                   setModalShow={setModalShow}
                                   setCurrentActivity={setCurrentActivity}
                                   setScreenStatus={setScreenStatus}
                                   setOpenVideo={setOpenVideo}
-                                  title={activityData.title}
-                                  data={activityData}
+                                  title={video.title}
+                                  data={video}
                                   className="card-spacing"
-                                  activities={activities}
-                                  isActivityCard
-                                  permission={permission}
-                                  handleShow={handleShow}
-                                  setSelectedActivityId={setActivityId}
-                                  addToProjectCheckbox={addToProjectCheckbox}
-                                  selectedProjectstoAdd={selectedProjectstoAdd}
-                                  setSelectedProjectstoAdd={setSelectedProjectstoAdd}
                                   sethideallothers={sethideallothers}
                                   setisbackHide={setisbackHide}
                                 />
-                              ))
-                            : allVideos?.data?.map((video) => (
-                                <>
-                                  <AddVideoCard
-                                    setModalShow={setModalShow}
-                                    setCurrentActivity={setCurrentActivity}
-                                    setScreenStatus={setScreenStatus}
-                                    setOpenVideo={setOpenVideo}
-                                    title={video.title}
-                                    data={video}
-                                    className="card-spacing"
-                                    sethideallothers={sethideallothers}
-                                    setisbackHide={setisbackHide}
-                                  />
-                                </>
-                              ))}
+                              </>
+                            ))}
                         </div>
                         {allVideos?.data && !activities && (
                           <div style={{}} className="admin-panel ">
