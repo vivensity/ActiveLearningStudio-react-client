@@ -159,7 +159,7 @@ class RegisterPage extends React.Component {
           title: 'YOU ARE REGISTERED!',
           html: message,
           showConfirmButton: true,
-          confirmButtonText: 'Login to CurrikiStudio',
+          confirmButtonText: 'Login to imSparked',
         }).then((result) => {
           if (result.isConfirmed) {
             history.push(`/login/${domain?.domain}`);
@@ -251,7 +251,7 @@ class RegisterPage extends React.Component {
               <div className="d-flex align-items-center justify-content-between">
                 <h1 className="auth-title mb2 mb-5">
                   Welcome
-                  {!clicked ? ` to ${window.__RUNTIME_CONFIG__.REACT_APP_INSTANT_NAME || 'Curriki'}` : `, ${firstName}`}
+                  {!clicked ? ` to ${window.__RUNTIME_CONFIG__.REACT_APP_INSTANT_NAME || 'imSparked'}` : `, ${firstName}`}
                 </h1>
 
                 {/* <strong>OR</strong> */}
@@ -268,8 +268,8 @@ class RegisterPage extends React.Component {
               {/* <p className="auth-Pdescrip text-left">
                 {!clicked
                   ? 'Start making a difference in the way learning experiences are created.'
-                  : 'Before start creating awesome content, please let us know the usage your are giving to Curriki. '}
-              </p> */}
+                  : 'Before start creating awesome content, please let us know the usage your are giving to imSparked. '}
+                </p> */}
               <div className="content-section">
                 <Tabs
                   defaultActiveKey={activeTab}
@@ -435,7 +435,7 @@ class RegisterPage extends React.Component {
                             />
                           </div>
                           <div className="termsandcondition">
-                            By clicking the &quot;Sign Up&quot; button, you are creating a CurrikiStudio account, and you agree to Curriki&apos;s{' '}
+                            By clicking the &quot;Sign Up&quot; button, you are creating a imSparked account, and you agree to imSparked&apos;s{' '}
                             <a
                               target="_blank"
                               href={domain?.tos_type == 'URL' || domain?.tos_url != null ? domain?.tos_url : `/org/${domain?.domain}/terms-policy-content/tos_content`}
@@ -472,8 +472,8 @@ class RegisterPage extends React.Component {
                   </div>
                   <div className="form-group">
                     <div className="using-curriki">
-                      <div className="curriki-line">You are using Curriki for:</div>
-                      {/* <div className="line-horizontal" /> */}
+                      <div className="curriki-line">You are using imSparked for:</div>
+                      <div className="line-horizontal" />
                     </div>
                   </div>
                   <div className="form-group ">
@@ -519,7 +519,7 @@ class RegisterPage extends React.Component {
                     </button>
                   </div>
                   <div className="termsandcondition">
-                    By clicking the &quot;Sign Up&quot; button, you are creating a CurrikiStudio account, and you agree to Curriki&apos;s{' '}
+                    By clicking the &quot;Sign Up&quot; button, you are creating a imSparked account, and you agree to imSparked&apos;s{' '}
                     <a target="_blank" href={domain?.tos_type == 'URL' || domain?.tos_url != null ? domain?.tos_url : `/org/${domain?.domain}/terms-policy-content/tos_content`}>
                       Terms of Use
                     </a>{' '}

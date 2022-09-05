@@ -1905,7 +1905,7 @@ a:hover {
     background: #ffffff 0 0 no-repeat padding-box;
     //box-shadow: 1px 1px 5px 0 #000000;
     border-radius: 50%;
-    left: -11px;
+    left: 6px;
     border: 1px solid #ccc;
     width: 22px;
     height: 22px;
@@ -4064,4 +4064,15 @@ body.collapsed {
 .video_activity .interactivevideoreferce {
   margin: 0 auto;
   min-height: calc(100vh - 200px);
+}
+.footer-img-section .img- img {
+  width: 71px;
+  height: 40px;
+  object-fit: contain;
+}
+.model-box-google img {
+  max-width: 100%;
+}
+.model-box-google .model-body {
+  max-width: 100% !important;
 }

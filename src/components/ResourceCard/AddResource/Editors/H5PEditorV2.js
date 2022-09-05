@@ -34,6 +34,8 @@ const H5PEditor = (props) => {
     submitForm,
     activityPreview,
     setisSubmitActivty,
+    saveButtonCheck,
+    saveOnlyHandlerClose
   } = props;
 
   const uploadFile = useRef();
@@ -43,16 +45,25 @@ const H5PEditor = (props) => {
   }
   const dispatch = useDispatch();
   const [submitAction, setSubmitAction] = useState(defaultState);
+  const [saveButton, setSaveButton] = useState(false);
   const [h5pFile, setH5pFile] = useState(null);
+  const [saveOnlyHandler, setSaveOnlyHandler] = useState({});
+  let saveButtonFlag = true;
 
   const setH5pFileUpload = (e) => {
     setH5pFile(e.target.files[0]);
   };
   useEffect(() => {
     submitForm.current = submitResource;
+    saveButtonCheck && (saveButtonCheck.current = handleSaveButtonOnClose);
   }, [formData]);
 
   useEffect(() => {
+    saveOnlyHandlerClose && (saveOnlyHandlerClose.current = saveOnlyHandler);
+  }, [saveOnlyHandler])
+
+  useEffect(() => {
+
     if (h5pLib === 'H5P.BrightcoveInteractiveVideo 1.0') {
       let bcAccountId = accountId ? accountId : typeof editVideo === 'object' && editVideo.hasOwnProperty('brightcoveData') ? editVideo.brightcoveData.accountId : null;
       let apiSettingId = settingId ? settingId : typeof editVideo === 'object' && editVideo.hasOwnProperty('brightcoveData') ? editVideo.brightcoveData.apiSettingId : null;
@@ -62,6 +73,12 @@ const H5PEditor = (props) => {
     }
   }, [loadH5pSettings]);
 
+  useEffect(() => {
+    const libraryName = h5pLib;
+    if (libraryName.includes('H5P.InteractiveBook'))
+      setSaveButton(true);
+  }, [h5pLib])
+
   const onSubmitActionRadioChange = (e) => {
     setSubmitAction(e.currentTarget.value);
   };
@@ -70,22 +87,31 @@ const H5PEditor = (props) => {
     let ids = [];
     if (data.length > 0) {
       data?.map((datum) => {
-        ids.push(datum.value);
+        ids.push(datum?.value);
       });
     }
     return ids;
   };
 
+  const handleSaveButtonOnClose = () => saveButtonFlag = true;
+
   const submitResource = async (event) => {
     const parameters = window.h5peditorCopy.getParams();
-
     formData.subject_id = formatSelectBoxData(formData.subject_id);
     formData.education_level_id = formatSelectBoxData(formData.education_level_id);
     formData.author_tag_id = formatSelectBoxData(formData.author_tag_id);
     const { metadata } = parameters;
     if (metadata?.title !== undefined) {
       if (editActivity) {
-        dispatch(editResourceAction(playlistId, h5pLib, h5pLibType, activityId, { ...formData, title: metadata?.title || formData.title }, hide, projectId));
+        dispatch(editResourceAction(
+          playlistId,
+          h5pLib,
+          h5pLibType,
+          activityId,
+          { ...formData, title: metadata?.title || formData.title },
+          saveButtonFlag && hide,
+          projectId
+        ));
       } else if (editVideo) {
         if (activityPreview) {
           const h5pdata = {
@@ -113,6 +139,18 @@ const H5PEditor = (props) => {
           );
           setOpenVideo(false);
         }
+        await dispatch(edith5pVideoActivity(editVideo.id, { ...formData, title: metadata?.title || formData.title }));
+        setOpenVideo(false);
+      } else if (saveOnlyHandler.activity || saveOnlyHandlerClose?.current?.activity) {
+        dispatch(editResourceAction(
+          playlistId,
+          h5pLib,
+          h5pLibType,
+          saveOnlyHandler?.activity?.id || saveOnlyHandlerClose?.current?.activity?.id,
+          { ...formData, title: metadata?.title || formData.title },
+          hide,
+          projectId
+        ));
       } else {
         const payload = {
           event,
@@ -122,17 +160,28 @@ const H5PEditor = (props) => {
         if (activityPreview) {
           dispatch(createIndResourceAction({ ...formData, title: metadata?.title || formData.title }, hide, accountId, settingId));
         } else {
-          handleCreateResourceSubmit(playlistId, h5pLib, h5pLibType, payload, { ...formData, title: metadata?.title || formData.title }, projectId, hide, reverseType);
+          // handleCreateResourceSubmit(playlistId, h5pLib, h5pLibType, payload, { ...formData, title: metadata?.title || formData.title }, projectId, hide, reverseType);
+          handleCreateResourceSubmit(playlistId, h5pLib, h5pLibType, payload, { ...formData, title: metadata?.title || formData.title }, projectId, hide, reverseType, setSaveOnlyHandler);
         }
       }
       delete window.H5PEditor; // Unset H5PEditor after saving the or editing the activity
     }
   };
-  const handleCreateResourceSubmit = async (currentPlaylistId, editor, editorType, payload, formData, projectId, hide, reverseType) => {
+  const handleCreateResourceSubmit = async (currentPlaylistId, editor, editorType, payload, formData, projectId, hide, reverseType, setSaveOnlyHandler) => {
     // try {
-
     if (payload.submitAction === 'create') {
-      await dispatch(createResourceAction(currentPlaylistId, editor, editorType, formData, hide, type, accountId, settingId, reverseType));
+      await dispatch(createResourceAction(
+        currentPlaylistId,
+        editor,
+        editorType,
+        formData,
+        saveButtonFlag && hide,
+        type,
+        accountId,
+        settingId,
+        reverseType,
+        setSaveOnlyHandler,
+      ));
       if (type === 'videoModal') {
         if (setOpenVideo) {
           setOpenVideo(false);
@@ -151,7 +200,7 @@ const H5PEditor = (props) => {
           <div className="col-md-9 col-md-offset-3" style={{ position: 'inherit' }}></div>
         </div>
 
-        <input name="_token" type="hidden" value={process.env.REACT_APP_H5P_KEY} />
+        <input name="_token" type="hidden" value={window.__RUNTIME_CONFIG__.REACT_APP_H5P_KEY} />
         <input type="hidden" name="library" id="laravel-h5p-library" value={h5pLib} />
         <input type="hidden" name="parameters" id="laravel-h5p-parameters" value={h5pParams || JSON.parse('{"params":{},"metadata":{}}')} />
 
@@ -178,7 +227,7 @@ const H5PEditor = (props) => {
                     onChange={setH5pFileUpload}
                     ref={uploadFile}
                     style={{ cursor: 'pointer' }}
-                    // style={{ display: 'none' }}
+                  // style={{ display: 'none' }}
                   />
                   <div className="upload-holder">
                     <FontAwesomeIcon icon="file-upload" className="mr-2" />
@@ -238,7 +287,7 @@ const H5PEditor = (props) => {
                 Cancel
               </div>
             </div>
-            <div className="save-close">
+            <div className={saveButton ? "save-close space-between" : "save-close"}>
               <div
                 className="saveclosemodel"
                 onClick={() => {
@@ -252,15 +301,17 @@ const H5PEditor = (props) => {
               >
                 Save & Close
               </div>
-              {/* <Buttons
-              text="Save"
-              width="97px"
-              className="save-btn"
-              onClick={() => {
-                props.onHide();
-                props.setSuccessMessage(true);
-              }}
-            /> */}
+              {saveButton && (
+                <div
+                  className="saveclosemodel"
+                  onClick={() => {
+                    saveButtonFlag = false;
+                    submitResource();
+                  }}
+                >
+                  Save
+                </div>
+              )}
             </div>
           </div>
         </fieldset>

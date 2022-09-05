@@ -15,6 +15,8 @@ import { createProjectAction, updateProjectAction, uploadProjectThumbnailAction,
 import InputField from 'components/InputField';
 import TextareaField from 'components/TextareaField';
 import PexelsAPI from 'components/models/pexels';
+import HeadingText from "utils/HeadingText/headingtext";
+import ReactMultiSelectCheckboxes from "react-multiselect-checkboxes";
 import { addActivityPlaylistSearch, moveActivityPlaylist } from 'store/actions/playlist';
 import './style.scss';
 import { clonePlaylist, cloneActivity } from 'store/actions/search';
@@ -27,8 +29,13 @@ const maxLength1000 = maxLength(1000);
 
 let imageValidation = '';
 const projectShare = true;
+let projectsTab = []
 
 const onSubmit = async (values, dispatch, props) => {
+  let labels = [];
+  projectsTab && projectsTab.length > 0 && projectsTab.map((v) => {
+    labels.push(v.value)
+  })
   const { history, activity, project, searchView, fromTeam, addtoProject, selectedProjectstoAdd, selectedTeam, handleCloseProjectModal, currentOrganization } = props;
 
   const { name, description } = values;
@@ -47,22 +54,24 @@ const onSubmit = async (values, dispatch, props) => {
         result = await dispatch(
           project?.thumbUrl
             ? createProjectAction({
-                name,
-                description,
-                thumb_url: project?.thumbUrl,
-                is_public: projectShare,
-                organization_visibility_type_id: 1,
-                team_id: fromTeam && selectedTeam ? selectedTeam?.id : null,
-              })
+              name,
+              description,
+              thumb_url: project?.thumbUrl,
+              is_public: projectShare,
+              organization_visibility_type_id: 1,
+              team_id: fromTeam && selectedTeam ? selectedTeam?.id : null,
+              project_for: labels ? labels : []
+            })
             : createProjectAction({
-                name,
-                description,
-                is_public: projectShare,
-                organization_visibility_type_id: 1,
-                team_id: fromTeam && selectedTeam ? selectedTeam?.id : null,
-                // eslint-disable-next-line max-len
-                thumb_url: 'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
-              }),
+              name,
+              description,
+              is_public: projectShare,
+              organization_visibility_type_id: 1,
+              team_id: fromTeam && selectedTeam ? selectedTeam?.id : null,
+              // eslint-disable-next-line max-len
+              thumb_url: 'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
+              project_for: labels ? labels : []
+            }),
         );
         if (result) {
           if (searchView) {
@@ -109,26 +118,29 @@ const onSubmit = async (values, dispatch, props) => {
     result = await dispatch(
       project?.thumbUrl
         ? createProjectAction({
-            name,
-            description,
-            thumb_url: project?.thumbUrl,
-            is_public: projectShare,
-            organization_visibility_type_id: 1,
-            team_id: fromTeam && selectedTeam ? selectedTeam?.id : null,
-          })
+          name,
+          description,
+          thumb_url: project?.thumbUrl,
+          is_public: projectShare,
+          organization_visibility_type_id: 1,
+          team_id: fromTeam && selectedTeam ? selectedTeam?.id : null,
+          project_for: labels ? labels : []
+        })
         : createProjectAction({
-            name,
-            description,
-            is_public: projectShare,
-            organization_visibility_type_id: 1,
-            team_id: fromTeam && selectedTeam ? selectedTeam?.id : null,
-            // eslint-disable-next-line max-len
-            thumb_url: 'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
-          }),
+          name,
+          description,
+          is_public: projectShare,
+          organization_visibility_type_id: 1,
+          team_id: fromTeam && selectedTeam ? selectedTeam?.id : null,
+          // eslint-disable-next-line max-len
+          thumb_url: 'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
+          project_for: labels ? labels : []
+        }),
     );
     if (handleCloseProjectModal) {
       handleCloseProjectModal(false);
     }
+    labels = [];
     history.push(`/org/${currentOrganization?.currentOrganization?.domain}/project/${result.id}`);
   }
 };
@@ -167,6 +179,11 @@ let CreateProjectPopup = (props) => {
   const [mediaSources, setMediaSources] = useState([]);
   const openFile = useRef();
   const [visibilityTypeArray, setVisibilityTypeArray] = useState([]);
+  const [projectFor, setProjectFor] = useState([])
+  const projectForOptions = [
+    { label: 'Student', value: 'student' },
+    { label: 'Teacher', value: 'teacher' },
+  ];
   // remove popup when escape is pressed
   const escFunction = useCallback(
     (event) => {
@@ -228,6 +245,22 @@ let CreateProjectPopup = (props) => {
         <div className="project-description">
           <Field name="description" component={TextareaField} validate={[required, maxLength1000]} autoComplete="new-password" label="What is your project about?" />
         </div>
+
+        <div className="layout-formik-select drop-down-tabs">
+          <div className="formik-select">
+            <HeadingText text="Project For" className="formik-select-title" />
+            <ReactMultiSelectCheckboxes
+              name="project_for"
+              hideSearch
+              options={projectForOptions}
+              onChange={(e) => {
+                projectsTab = e;
+                setProjectFor(e);
+              }}
+            />
+          </div>
+        </div>
+
         <div className="upload-thumbnail check">
           <div className="upload_placeholder">
             <label style={{ display: 'none' }}>
