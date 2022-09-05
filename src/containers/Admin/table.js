@@ -229,8 +229,8 @@ function Table(props) {
                     <tr key={counter} className="admin-panel-rows">
                       <td>{row.lms_url}</td>
                       <td>{row.lms_name}</td>
-                      <td>{row.user?.first_name + ' ' + row.user?.last_name}</td>
-                      <td>{row?.user?.email}</td>
+                      <td>{row.id}</td>
+                      {/* <td>{row?.user?.email}</td> */}
                       <td>{row?.site_name}</td>
                       <td>
                         <div className="admin-panel-dropdown">
@@ -348,7 +348,7 @@ function Table(props) {
                         <div className="admin-name-img">
                           <div
                             style={{
-                              backgroundImage: row.image?.includes('dev.currikistudio') ? `url(${row.image})` : `url(${global.config.resourceUrl}${row.image})`,
+                              backgroundImage: row.image?.includes('content.imsparked') ? `url(${row.image})` : `url(${global.config.resourceUrl}${row.image})`,
                               backgroundPosition: 'center',
                               backgroundRepeat: 'no-repeat',
                               backgroundSize: 'cover',

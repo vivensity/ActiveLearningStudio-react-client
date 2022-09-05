@@ -216,7 +216,7 @@ export const resourceSaved = (saved) => async (dispatch) => {
   });
 };
 
-export const createResourceAction = (playlistId, editor, editorType, metadata, hide, type, accountId, settingId, reverseType) => async (dispatch) => {
+export const createResourceAction = (playlistId, editor, editorType, metadata, hide, type, accountId, settingId, reverseType, setSaveOnlyHandler) => async (dispatch) => {
   const data = {
     playlistId,
     library: window.h5peditorCopy.getLibrary(),
@@ -267,7 +267,8 @@ export const createResourceAction = (playlistId, editor, editorType, metadata, h
         type: actionTypes.ADD_NEW_VIDEO,
         payload: insertedResource.activity,
       });
-      hide();
+      hide && hide();
+
     } else {
       const insertedResource = await resourceService.create(activity, playlistId);
       toast.dismiss();
@@ -285,14 +286,18 @@ export const createResourceAction = (playlistId, editor, editorType, metadata, h
         editor,
         editorType,
       });
-      dispatch({
-        type: actionTypes.CLEAR_FORM_DATA_IN_CREATION,
-      });
-      hide();
-      dispatch({
-        type: 'SET_ACTIVE_ACTIVITY_SCREEN',
-        payload: '',
-      });
+      if (hide) {
+        dispatch({
+          type: actionTypes.CLEAR_FORM_DATA_IN_CREATION,
+        });
+        hide();
+        dispatch({
+          type: 'SET_ACTIVE_ACTIVITY_SCREEN',
+          payload: '',
+        });
+      } else {
+        setSaveOnlyHandler(insertedResource)
+      }
     }
   } else {
     dispatch({
@@ -611,14 +616,16 @@ export const editResourceAction = (playlistId, editor, editorType, activityId, m
     editorType,
   });
 
-  dispatch({
-    type: actionTypes.CLEAR_FORM_DATA_IN_CREATION,
-  });
-  hide();
-  dispatch({
-    type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
-    payload: '',
-  });
+  if (hide) {
+    dispatch({
+      type: actionTypes.CLEAR_FORM_DATA_IN_CREATION,
+    });
+    hide();
+    dispatch({
+      type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
+      payload: '',
+    });
+  }
   return response;
   // } catch (e) {
   //   console.log(e);
@@ -822,8 +829,8 @@ export const searchPreviewActivityAction = (activityId) => async (dispatch) => {
 
 export const formatSelectBoxData = (data) => {
   let ids = [];
-  if(data.length > 0){
-    data?.map(datum=>{
+  if (data.length > 0) {
+    data?.map(datum => {
       ids.push(datum.value);
     });
   }
