@@ -11,23 +11,10 @@ import { GoogleLogin } from 'react-google-login';
 
 import logo from 'assets/images/GCLogo.png';
 import btnLogo from 'assets/images/googleBtnLogo.png';
-import {
-  googleClassRoomLoginAction,
-  googleClassRoomLoginFailureAction,
-  googleClassRoomCourseTopicAction,
-} from 'store/actions/gapi';
+import { googleClassRoomLoginAction, googleClassRoomLoginFailureAction, googleClassRoomCourseTopicAction } from 'store/actions/gapi';
 import { copyProject, publishPlaylist, publishActivity, publistActivity, publishIdependentActivity } from 'store/actions/share';
 
-const GoogleLoginModal = ({
-  show,
-  onHide,
-  googleClassRoomLogin,
-  googleClassRoomLoginFailure,
-  googleClassRoomCourseTopics,
-  projectId,
-  playlistId,
-  activityId,
-}) => {
+const GoogleLoginModal = ({ show, onHide, googleClassRoomLogin, googleClassRoomLoginFailure, googleClassRoomCourseTopics, projectId, playlistId, activityId }) => {
   const dataRedux = useSelector((state) => state);
   const [tokenTemp, setTokenTemp] = useState('');
   const [showForm, setShowForm] = useState(false);
@@ -45,13 +32,11 @@ const GoogleLoginModal = ({
     } else if (dataRedux.share.googleShare === 'close') {
       onHide();
     }
-    if ((typeof playlistId == 'undefined') && (typeof activityId == 'undefined')) {
+    if (typeof playlistId == 'undefined' && typeof activityId == 'undefined') {
       setShareType('Project');
-    }
-    else if (playlistId != 0 && activityId != 0) {
+    } else if (playlistId != 0 && activityId != 0) {
       setShareType('Activity');
-    }
-    else if (playlistId != 0 && activityId == 0) {
+    } else if (playlistId != 0 && activityId == 0) {
       setShareType('Playlist');
     }
   }, [dataRedux, onHide]);
@@ -76,15 +61,13 @@ const GoogleLoginModal = ({
   };
 
   const callPublishingMethod = (params) => {
-    if ((typeof params.playlistId == 'undefined' && typeof params.activityId == 'undefined') ||
-      (params.playlistId === 0 && params.activityId === 0)) {
+    if ((typeof params.playlistId == 'undefined' && typeof params.activityId == 'undefined') || (params.playlistId === 0 && params.activityId === 0)) {
       if (params.values.course === 'Create a new class') {
         copyProject(params.projectId, null, params.tokenTemp);
       } else {
         copyProject(params.projectId, params.values.course, params.tokenTemp);
       }
-    }
-    else if (params.playlistId != 0 && params.activityId != 0) {
+    }  else if (params.playlistId != 0 && params.activityId != 0) {
       if (params.playlistId === 999999) {
         if (typeof params.values.course == 'undefined') {
           publishIdependentActivity(null, null, params.activityId, params.tokenTemp);
@@ -93,8 +76,7 @@ const GoogleLoginModal = ({
         } else {
           publishIdependentActivity(params.values.course, params.values.playlist, params.activityId, params.tokenTemp);
         }
-      }
-      else {
+      } else {
         if (typeof params.values.course == 'undefined') {
           publistActivity(params.projectId, null, null, params.playlistId, params.activityId, params.tokenTemp);
         } else if ((typeof params.values.course == 'undefined') && (typeof params.values.playlist == 'undefined')) {
@@ -103,8 +85,7 @@ const GoogleLoginModal = ({
           publistActivity(params.projectId, params.values.course, params.values.playlist, params.playlistId, params.activityId, params.tokenTemp);
         }
       }
-    }
-    else if (params.playlistId != 0 && params.activityId == 0) {
+    }  else if (params.playlistId != 0 && params.activityId == 0) {
       if (typeof params.values.course == 'undefined') {
         publishPlaylist(params.projectId, null, null, params.playlistId, params.tokenTemp);
       } else if ((typeof params.values.course == 'undefined') && (typeof params.values.playlist == 'undefined')) {
@@ -151,7 +132,7 @@ const GoogleLoginModal = ({
                       setTokenTemp(JSON.stringify(data.tokenObj));
                     }}
                     // onFailure={googleClassRoomLoginFailure}
-                    scope="https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.courses https://www.googleapis.com/auth/classroom.topics https://www.googleapis.com/auth/classroom.coursework.me https://www.googleapis.com/auth/classroom.coursework.students"
+                    scope="https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.topics https://www.googleapis.com/auth/classroom.coursework.me https://www.googleapis.com/auth/classroom.coursework.students"
                     cookiePolicy="single_host_origin"
                   >
                   </GoogleLogin>
@@ -178,11 +159,19 @@ const GoogleLoginModal = ({
                       setLoading(false);
                       onHide();
                     }}
+                    validate={(values) => {
+                      const errors = {};
+                      if (!values.course) {
+                        errors.course = 'Please select a course from a dropdown or create a new one manually.';
+                      }
+
+                      return errors;
+                    }}
                   >
                     {({
                       values,
-                      // errors,
-                      // touched,
+                       errors,
+                       touched,
                       handleChange,
                       handleBlur,
                       handleSubmit,
@@ -286,9 +275,11 @@ const GoogleLoginModal = ({
                           Are you sure you want to share this Project to Google Classroom?
                         </p>
                         */}
-                        {!loading && (
-                          <button type="submit">Confirm</button>
-                        )}
+                       <div className="error" style={{ color: 'red' }}>
+                          {errors.course && touched.course && errors.course}
+                        </div>
+                        <br />
+                        {!loading && <button type="submit">Confirm</button>}
                       </form>
                     )}
                   </Formik>
