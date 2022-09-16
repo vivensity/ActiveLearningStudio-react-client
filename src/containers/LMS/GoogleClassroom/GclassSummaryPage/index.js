@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { GoogleLogin } from 'react-google-login';
 import { Alert } from 'react-bootstrap';
-import logo from 'assets/images/logo.png';
+import logo from 'assets/images/logo.svg';
 import { getSummaryAuthAction } from 'store/actions/gapi';
 import ActivitySummary from 'containers/LMS/GoogleClassroom/ActivitySummary';
 import './styles.scss';
