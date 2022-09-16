@@ -141,7 +141,7 @@ const GoogleLoginModal = ({
                       setTokenTemp(JSON.stringify(data.tokenObj));
                     }}
                     // onFailure={googleClassRoomLoginFailure}
-                    scope="https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.courses https://www.googleapis.com/auth/classroom.topics https://www.googleapis.com/auth/classroom.coursework.me https://www.googleapis.com/auth/classroom.coursework.students"
+                    scope="https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.topics https://www.googleapis.com/auth/classroom.coursework.me https://www.googleapis.com/auth/classroom.coursework.students"
                     cookiePolicy="single_host_origin"
                   >
                   </GoogleLogin>
@@ -168,11 +168,19 @@ const GoogleLoginModal = ({
                       setLoading(false);
                       onHide();
                     }}
+                    validate={(values) => {
+                      const errors = {};
+                      if (!values.course) {
+                        errors.course = 'Please select a course from a dropdown or create a new one manually.';
+                      }
+
+                      return errors;
+                    }}
                   >
                     {({
                       values,
-                      // errors,
-                      // touched,
+                       errors,
+                       touched,
                       handleChange,
                       handleBlur,
                       handleSubmit,
@@ -276,6 +284,10 @@ const GoogleLoginModal = ({
                           Are you sure you want to share this Project to Google Classroom?
                         </p>
                         */}
+                        <div className="error" style={{ color: 'red' }}>
+                          {errors.course && touched.course && errors.course}
+                        </div>
+                        <br />
                         {!loading && (
                           <button type="submit">Confirm</button>
                         )}
